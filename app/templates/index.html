@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <a class="navbar-brand" href="/">Biblioteca</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link text-dark" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="/livros/">Livros</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="/reserva/">Reserva</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="/cidade/">Cidade</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="/autor/">Autor</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="/editor/">Editora</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="/genero/">Genero</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="/leitor/">Leitor</a></li>
+                <li class="nav-item"><a class="nav-link text-dark" href="/admin/">Administração</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="jumbotron text-center">
+            <h1 class="display-4">Olá, é bom te ver por aqui</h1>
+            <p class="lead">Esta é a página inicial da Biblioteca</p>
+            <p class="lead">Seja Bem Vindo(A)</p>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <h2 class="mb-4">Tabela de Livros</h2>
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Autor</th>
+                    <th scope="col">Editora</th>
+                    <th scope="col">Gênero</th>
+                    <th scope="col">Preço</th>
+                    <th scope="col">Data Publicação</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" style="width: 200px;">Ações</th> </tr>
+            </thead>
+            <tbody>
+                {% for livro in livros %}
+                <tr>
+                    <td>{{ livro.nome }}</td>
+                    <td>{{ livro.autor }}</td>
+                    <td>{{ livro.editora }}</td>
+                    <td>{{ livro.genero }}</td>
+                    <td>R$ {{ livro.preco }}</td>
+                    <td>{{ livro.data_plub|date:"d/m/Y" }}</td> <td>
+                        {% if livro.status %}
+                            <span class="badge badge-success">Disponível</span>
+                        {% else %}
+                            <span class="badge badge-danger">Indisponível</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a href="{% url 'edit_livro' livro.id %}" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="{% url 'delete' livro.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Deseja excluir?')">Excluir</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Livro</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Detalhes do Livro: {{ livro.nome }}</h2>
+            <a href="{% url 'index' %}" class="btn btn-secondary">Voltar para a Home</a>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                Informações Atuais
+            </div>
+            <div class="card-body">
+                <p><strong>Nome:</strong> {{ livro.nome }}</p>
+                <p><strong>Autor:</strong> {{ livro.autor.nome|default:livro.autor }}</p>
+                <p><strong>Editora:</strong> {{ livro.editora.nome|default:livro.editora }}</p>
+                <p><strong>Gênero:</strong> {{ livro.genero.nome }}</p>
+                <p><strong>Preço:</strong> R$ {{ livro.preco }}</p>
+                <p><strong>Data de Publicação:</strong> {{ livro.data_pub }}</p>
+                <p><strong>Status:</strong> {{ livro.status|yesno:"Disponível,Indisponível" }}</p>
+            </div>
+
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                Editar Livro
+            </div>
+            <div class="card-body">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-success btn-block mt-3">
+                        Salvar Edições do Livro
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
